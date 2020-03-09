@@ -1,3 +1,4 @@
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
 # Create your views here.
@@ -54,8 +55,8 @@ def login(request):
         pwd = request.POST.get('password')
         # 如何判断用户名和密码正确
         user = auth.authenticate(username=username, password=pwd)
-        auth.login(request, user)
         if user:
+            auth.login(request, user)
             return redirect('/index/')
     return render(request, 'login.html')
 
@@ -64,4 +65,16 @@ def index(request):
     print('========================')
     print(request.user.username)
     return render(request, 'index.html')
+
+
+def logout(request):
+    auth.logout(request)
+    return redirect('/login/')
+
+
+def register(request):
+    from django.contrib.auth.models import User
+    # User.objects.create(username='alex', password='123')
+    User.objects.create_user(username='alex2', password='123')
+    return HttpResponse('o98k')
 
